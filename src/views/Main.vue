@@ -56,6 +56,9 @@ export default class Main extends Vue {
 .list-group-item i {
   cursor: pointer;
 }
+.row {
+  margin: 50px auto;
+}
 .col {
   width: 50%;
   display: block;
