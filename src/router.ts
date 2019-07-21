@@ -28,8 +28,8 @@ export default new Router({
       ],
     },
     {
-      path: "/embed",
-      name: "embed",
+      path: "/blank",
+      name: "blank",
       component: Embed,
     },
   ],
