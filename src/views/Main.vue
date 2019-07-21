@@ -57,9 +57,7 @@ export default class Main extends Vue {
     for (const div of divs) {
       const before = div.style.width;
       div.style.width = 100 / divs.length + "%";
-      console.log(
-        `divs.length:${divs.length}, width:${before} -> ${div.style.width}`
-      );
+      console.log(`divs.length:${divs.length}, width:${before} -> ${div.style.width}`);
     }
   }
 
