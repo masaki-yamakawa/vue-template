@@ -3,7 +3,7 @@ import Router from "vue-router";
 import BaseLayout from "./layouts/default.vue";
 import Main from "./views/Main.vue";
 import Welcome from "./views/Home.vue";
-import Embed from "./views/Embed.vue";
+import Blank from "./views/Blank.vue";
 
 Vue.use(Router);
 
@@ -28,9 +28,9 @@ export default new Router({
       ],
     },
     {
-      path: "/embed",
-      name: "embed",
-      component: Embed,
+      path: "/blank",
+      name: "blank",
+      component: Blank,
     },
   ],
 });
