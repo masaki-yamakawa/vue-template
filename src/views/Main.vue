@@ -4,9 +4,8 @@
       <div v-for="(views, id) in viewsLanes" :key="id" class="views-lanes" ref="viewLane">
         <div class="views-lane">
           <draggable :options="{group:'group', animation: 150}">
-            <i class="fa fa-align-justify handle"></i>
             <div v-for="view in views" :key="view.id" class="view-lane item">
-              {{ view.name }}
+              {{ view.name }} <span class="view-close-button" @click="delView(view.id)">x</span>
               <br />
               <iframe :src="view.url" class="iframe-view" />
             </div>
@@ -15,8 +14,8 @@
       </div>
     </div>
     <div class="view-lane-button">
-      <b-button v-on:click="addLane" pill variant="outline-secondary">+</b-button>
-      <b-button v-on:click="delLane" pill variant="outline-secondary">-</b-button>
+      <b-button v-on:click="addLane" pill variant="outline-secondary" style="width: 40px; height: 40px;">+</b-button>
+      <b-button v-on:click="delLane" pill variant="outline-secondary" style="width: 40px; height: 40px;">-</b-button>
     </div>
   </div>
 </template>
@@ -68,6 +67,17 @@ export default class Main extends Vue {
   private delLane() {
     this.viewsLanes.pop();
   }
+
+  private delView(id: number) {
+    for (const views of this.viewsLanes) {
+      const index = views.findIndex(view => view.id === id);
+      console.log(`view.id=${id}, findIndex=${index}`);
+      if (index >= 0) {
+        views.splice(index, 1);
+        break;
+      }
+    }
+  }
 }
 </script>
 
@@ -100,5 +110,11 @@ export default class Main extends Vue {
 .iframe-view {
   width: 90%;
   height: 400px;
+}
+.view-close-button {
+  float: right;
+  margin-right: 43px;
+  font-size: 130%;
+  font-weight: bolder;
 }
 </style>
