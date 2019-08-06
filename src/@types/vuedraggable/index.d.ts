@@ -1,5 +1,5 @@
-declare module 'vuedraggable' {
-    import Vue, { ComponentOptions } from 'vue';
+declare module "vuedraggable" {
+    import Vue, { ComponentOptions } from "vue";
 
     export interface DraggedContext<T> {
         index: number;

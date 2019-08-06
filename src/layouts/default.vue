@@ -2,9 +2,9 @@
   <div>
     <nav class="navbar header" role="navigation" aria-label="main navigation">
       <slide left width="350">
-        <a href="/"><span>Main</span></a>
-        <a href="/welcome"><span>Welcome to Vue.js world</span></a>
-        <a href="/about"><span>About us</span></a>
+        <b-link :to="{ path: '/' }"><span>Main</span></b-link>
+        <b-link :to="{ path: '/welcome' }" append><span>Welcome to Vue.js world</span></b-link>
+        <b-link :to="{ path: '/about' }"><span>About us</span></b-link>
       </slide>
     </nav>
 
