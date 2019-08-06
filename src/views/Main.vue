@@ -70,7 +70,7 @@ export default class Main extends Vue {
 
   private delView(id: number) {
     for (const views of this.viewsLanes) {
-      const index = views.findIndex(view => view.id === id);
+      const index = views.findIndex((view) => view.id === id);
       console.log(`view.id=${id}, findIndex=${index}`);
       if (index >= 0) {
         views.splice(index, 1);
