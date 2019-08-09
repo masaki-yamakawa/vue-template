@@ -15,13 +15,38 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Slide } from "vue-burger-menu";
+import { RepositoryFactory } from "../repositories/repositoryFactory";
+import { IContentRepository } from "../repositories/contentRepository";
 
 @Component({
   components: {
     Slide,
   },
 })
-export default class Layout extends Vue {}
+export default class Layout extends Vue {
+  private iframeContents = [];
+
+  private async created() {
+    this.iframeContents = await this.getIframeContents();
+  }
+
+  private async getIframeContents() {
+    try {
+      const repos: IContentRepository = RepositoryFactory.get("Content") as IContentRepository;
+      const res = await repos.find(`/api/v1/content`);
+      return res.data;
+    } catch (err) {
+      this.$notify({
+        title: "ERROR",
+        type: "error",
+        text: "Not connected to API server: Failed to get iframe contents",
+        duration: 5000,
+      });
+      console.log(`Not connected to API server: Failed to get iframe contents: ${err}`);
+      return;
+    }
+  }
+}
 </script>
 
 <style scoped>
