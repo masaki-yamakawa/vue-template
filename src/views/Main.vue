@@ -83,7 +83,8 @@ export default class Main extends Vue {
 
 <style scoped>
 .view-lane-container {
-  margin: 65px auto;
+  margin: 20px auto;
+  padding-left: 12px;
 }
 .view-lane-views {
   width: 96%;
@@ -108,12 +109,14 @@ export default class Main extends Vue {
   cursor: pointer;
 }
 .iframe-view {
-  width: 90%;
+  width: 98%;
   height: 400px;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 .view-close-button {
   float: right;
-  margin-right: 43px;
+  margin-right: 1%;
   font-size: 130%;
   font-weight: bolder;
 }
