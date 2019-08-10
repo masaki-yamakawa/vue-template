@@ -17,6 +17,7 @@
         ],
         "types": [
             "webpack-env",
+            "@types/node",
             "jest"
         ],
         "paths": {

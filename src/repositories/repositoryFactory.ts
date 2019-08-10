@@ -21,7 +21,10 @@ export class RepositoryFactory {
         return useMock ? new mockRepositories[className](name) : new repositories[className](name);
     }
 
-    private static toBoolean(booleanStr: string): boolean {
+    private static toBoolean(booleanStr: string | undefined): boolean {
+        if (!booleanStr) {
+            return false;
+        }
         return booleanStr.toLowerCase() === "true";
     }
 }
