@@ -58,6 +58,8 @@ export default class Layout extends Vue {
 
 <style scoped>
 .navbar.slider >>> .bm-burger-button {
+  height: 27px;
+  width: 33px;
   left: 5px;
   top: 10px;
 }
