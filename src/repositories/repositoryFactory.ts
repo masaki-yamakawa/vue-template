@@ -18,7 +18,7 @@ export class RepositoryFactory {
         const className: string = useMock ? `Mock${name}Repository` : `${name}Repository`;
         console.log(`Repository:${className} dynamic create.`);
 
-        return useMock ? new mockRepositories[className]() : new repositories[className]();
+        return useMock ? new mockRepositories[className](name) : new repositories[className](name);
     }
 
     private static toBoolean(booleanStr: string): boolean {
