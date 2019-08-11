@@ -14,15 +14,3 @@ export default new Vuex.Store({
     plugins: [createPersistedState()],
     strict: debug,
 });
-
-// export default function() {
-//     const Store = new Vuex.Store({
-//         modules: {
-//             appProperty,
-//         },
-//         plugins: [createPersistedState()],
-//         strict: debug,
-//     });
-//     return Store;
-// }
-
