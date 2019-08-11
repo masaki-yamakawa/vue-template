@@ -7,7 +7,7 @@
         <b-link :to="{ path: '/about' }"><span>About us</span></b-link>
         <div>
           <b-dropdown id="dropdown-offset" offset="40" text="Level1 Menu" variant="dark">
-            <b-dropdown-item v-bind="iframeContents" v-for="iframeContent in iframeContents" :key="iframeContent.id" :href="iframeContent.url">
+            <b-dropdown-item v-bind="iframeContents" v-for="iframeContent in iframeContents" :key="iframeContent.id" v-on:click="selectContent(iframeContent)">
               <span>{{ iframeContent.title }}</span>
             </b-dropdown-item>
           </b-dropdown>
@@ -24,6 +24,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Slide } from "vue-burger-menu";
 import { RepositoryFactory } from "../repositories/repositoryFactory";
 import { IContentRepository } from "../repositories/contentRepository";
+import store from "../stores/index";
 
 @Component({
   components: {
@@ -52,6 +53,10 @@ export default class Layout extends Vue {
       console.log(`${err.response.status}: Not connected to API server: Failed to get iframe contents: ${err}`);
       return;
     }
+  }
+
+  private selectContent(content: any) {
+    this.$store.commit("setContent", content);
   }
 }
 </script>
