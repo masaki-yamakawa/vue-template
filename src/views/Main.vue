@@ -23,6 +23,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
+import store from "../stores";
+import * as util from "util";
 
 @Component({
   components: {
@@ -45,6 +47,7 @@ export default class Main extends Vue {
 
   private mounted() {
     this.adjustViewLaneWidth();
+    this.watchAndAddContent();
   }
 
   private updated() {
@@ -60,8 +63,20 @@ export default class Main extends Vue {
     }
   }
 
+  private watchAndAddContent() {
+    this.$store.subscribe(
+      (mutation, state) => {
+        console.log(`mutationType=${mutation.type}, payload=${JSON.stringify(mutation.payload)}`);
+        if (mutation.type === "setContent") {
+          const maxNum = this.largestNumber(this.viewsLanes);
+          this.viewsLanes[0].push({ id: maxNum + 1, name: mutation.payload.title, url: mutation.payload.url });
+        }
+      },
+    );
+  }
+
   private addLane() {
-    this.viewsLanes.push([{ id: -99, name: "", url: "/blank" }]);
+    this.viewsLanes.push([]);
   }
 
   private delLane() {
@@ -77,6 +92,11 @@ export default class Main extends Vue {
         break;
       }
     }
+  }
+
+  private largestNumber(arr: any[][]) {
+    const innerArr = arr.flatMap((inner) => inner);
+    return Math.max(...innerArr.map((obj) => obj.id));
   }
 }
 </script>
