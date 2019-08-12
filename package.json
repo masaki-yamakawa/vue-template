@@ -12,8 +12,10 @@
         "deploy:dev": "rm -rf ../express-template/src/public && cp -r ./dist ../express-template/src/public"
     },
     "dependencies": {
+        "@browser-bunyan/server-stream": "^1.5.3",
         "axios": "^0.19.0",
         "bootstrap-vue": "^2.0.0-rc.26",
+        "browser-bunyan": "^1.5.3",
         "core-js": "^2.6.5",
         "vue": "^2.6.10",
         "vue-burger-menu": "^2.0.2",
@@ -27,6 +29,7 @@
     },
     "devDependencies": {
         "@types/axios": "^0.14.0",
+        "@types/browser-bunyan": "^0.4.5",
         "@types/jest": "^23.1.4",
         "@vue/cli-plugin-babel": "^3.9.0",
         "@vue/cli-plugin-typescript": "^3.9.0",

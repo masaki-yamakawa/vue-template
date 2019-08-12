@@ -25,6 +25,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Draggable from "vuedraggable";
 import store from "../stores";
 import * as util from "util";
+import { Logger } from "../loggers/logger";
 
 @Component({
   components: {
@@ -59,14 +60,14 @@ export default class Main extends Vue {
     for (const div of divs) {
       const before = div.style.width;
       div.style.width = 100 / divs.length + "%";
-      console.log(`divs.length:${divs.length}, width:${before} -> ${div.style.width}`);
+      Logger.getLogger().debug(`divs.length:${divs.length}, width:${before} -> ${div.style.width}`);
     }
   }
 
   private watchAndAddContent() {
     this.$store.subscribe(
       (mutation, state) => {
-        console.log(`mutationType=${mutation.type}, payload=${JSON.stringify(mutation.payload)}`);
+        Logger.getLogger().debug(`mutationType=${mutation.type}, payload=${JSON.stringify(mutation.payload)}`);
         if (mutation.type === "setContent") {
           const maxNum = this.largestNumber(this.viewsLanes);
           this.viewsLanes[0].push({ id: maxNum + 1, name: mutation.payload.title, url: mutation.payload.url });
@@ -86,7 +87,7 @@ export default class Main extends Vue {
   private delView(id: number) {
     for (const views of this.viewsLanes) {
       const index = views.findIndex((view) => view.id === id);
-      console.log(`view.id=${id}, findIndex=${index}`);
+      Logger.getLogger().debug(`view.id=${id}, findIndex=${index}`);
       if (index >= 0) {
         views.splice(index, 1);
         break;
