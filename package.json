@@ -7,7 +7,7 @@
         "dev:mock": "vue-cli-service serve --mode mock",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "test:unit": "vue-cli-service test:unit",
+        "test": "vue-cli-service test:unit",
         "deploy": "rm -rf ../express-template/dist/public && cp -r ./dist ../express-template/dist/public",
         "deploy:dev": "rm -rf ../express-template/src/public && cp -r ./dist ../express-template/src/public"
     },
@@ -74,7 +74,7 @@
             "jest-serializer-vue"
         ],
         "testMatch": [
-            "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+            "**/tests/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
         ],
         "testURL": "http://localhost/",
         "watchPlugins": [

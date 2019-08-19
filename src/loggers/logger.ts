@@ -1,4 +1,4 @@
-import { ConsoleFormattedStream, createLogger, DEBUG, INFO } from "browser-bunyan";
+import { ConsoleFormattedStream, createLogger } from "browser-bunyan";
 import * as bunyan from "bunyan";
 import { ServerStream } from "@browser-bunyan/server-stream";
 
