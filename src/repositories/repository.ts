@@ -47,7 +47,6 @@ export abstract class Repository implements IRepository {
             return res;
         } catch (err) {
             success = false;
-            const res: AxiosResponse = await this.getAxios().get(url, config);
             throw err;
         } finally {
             Logger.getLogger().info(`Call REST server end: url=${url}, success=${success}, config=${config}`);
