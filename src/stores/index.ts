@@ -11,6 +11,6 @@ export default new Vuex.Store({
     modules: {
         appProperty,
     },
-    plugins: [createPersistedState()],
+    plugins: [createPersistedState({ key: "vue-app" })],
     strict: debug,
 });
