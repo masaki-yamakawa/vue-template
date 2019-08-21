@@ -71,7 +71,9 @@ export abstract class Repository implements IRepository {
             return res as AxiosResponse;
         } catch (err) {
             success = false;
-            router.push("/login");
+            if (err.response.status === 403) {
+                router.push("/login");
+            }
             throw err;
         } finally {
             Logger.getLogger().info(`Call REST server end: url=${url}, success=${success}, config=${util.inspect(paramConfig)}, data=${util.inspect(postData)}`);
