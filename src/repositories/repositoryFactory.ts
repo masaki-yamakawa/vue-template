@@ -1,13 +1,17 @@
 import { IRepository } from "./repository";
+import { LoginRepository } from "./loginRepository";
 import { ContentRepository } from "./contentRepository";
+import { MockLoginRepository } from "./mock/mockLoginRepository";
 import { MockContentRepository } from "./mock/mockContentRepository";
 import { Logger } from "../loggers/logger";
 
 const repositories: any = {
+    LoginRepository,
     ContentRepository,
 };
 
 const mockRepositories: any = {
+    MockLoginRepository,
     MockContentRepository,
 };
 

@@ -12,6 +12,7 @@
             </b-dropdown-item>
           </b-dropdown>
         </div>
+        <b-link :to="{ path: '/Login' }" v-on:click="logout"><span>Logout</span></b-link>
       </slide>
     </nav>
 
@@ -59,6 +60,10 @@ export default class Layout extends Vue {
 
   private selectContent(content: any) {
     this.$store.commit("setContent", content);
+  }
+
+  private logout() {
+    this.$store.commit("doLogout");
   }
 }
 </script>
