@@ -7,8 +7,6 @@ import * as util from "util";
 const baseDomain = process.env.VUE_APP_DEFAULT_API_SVR ? process.env.VUE_APP_DEFAULT_API_SVR : "/";
 const baseURL = `${baseDomain}api/v1/`;
 
-const loginUser = { userId: "user1", password: "password1" };
-
 const instance = axios.create({
     baseURL,
     timeout: 60000,
@@ -25,6 +23,7 @@ export interface IRepository<T = any> {
     readonly name: string;
 
     find(url?: string, parameters?: ObjectLiteral, config?: AxiosRequestConfig): Promise<AxiosResponse | T>;
+    save(url?: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | T>;
 }
 
 export abstract class Repository implements IRepository {
@@ -35,7 +34,7 @@ export abstract class Repository implements IRepository {
     }
 
     public async find(url?: string, parameters?: ObjectLiteral, config?: AxiosRequestConfig): Promise<AxiosResponse> {
-        const getUrl = url ? url : this.name.toLowerCase();
+        const getUrl = url ? url.toLowerCase() : this.name.toLowerCase();
         let queryStr = "";
         if (parameters) {
             queryStr = `${lurl.format({ query: parameters })}`;
@@ -43,45 +42,37 @@ export abstract class Repository implements IRepository {
         return this.callAxios(`${getUrl}${queryStr}`, config);
     }
 
-    private async callAxios(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse> {
+    public async save(url?: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse> {
+        const postUrl = url ? url.toLowerCase() : this.name.toLowerCase();
+        return this.callAxios(postUrl, config, data);
+    }
+
+    private async callAxios(url: string, config?: AxiosRequestConfig, postData?: any): Promise<AxiosResponse> {
         let paramConfig: AxiosRequestConfig | undefined;
-        if (config) {
-            paramConfig = config;
-        } else {
-            paramConfig = { headers: {} };
+        if (url !== "login") {
+            if (config) {
+                paramConfig = config;
+            } else {
+                paramConfig = { headers: {} };
+            }
+            paramConfig.headers.authorization = `Bearer ${store.getters.jwt}`;
         }
-        paramConfig.headers.authorization = `Bearer ${store.getters.jwt}`;
 
         let success: boolean = true;
         try {
-            Logger.getLogger().info(`Call REST server start: url=${url}, config=${util.inspect(paramConfig)}`);
-            let retry: boolean = true;
-            let counter = 0;
+            Logger.getLogger().info(`Call REST server start: url=${url}, config=${util.inspect(paramConfig)}, data=${util.inspect(postData)}`);
             let res: AxiosResponse | null = null;
-            while (retry) {
-                counter++;
-                try {
-                    res = await this.getAxios().get(url, paramConfig);
-                    retry = false;
-                } catch (error) {
-                    if (error.response.status !== 403) {
-                        throw error;
-                    }
-                    const resLogin: AxiosResponse = await this.getAxios().post("login", { userId: loginUser.userId, password: loginUser.password });
-                    const jwt: string = resLogin.headers.authorization;
-                    store.commit("saveJwt", jwt);
-                    paramConfig.headers.authorization = `Bearer ${store.getters.jwt}`;
-                    if (counter > 2) {
-                        retry = false;
-                    }
-                }
+            if (!postData) {
+                res = await this.getAxios().get(url, paramConfig);
+            } else {
+                res = await this.getAxios().post(url, postData, paramConfig);
             }
             return res as AxiosResponse;
         } catch (err) {
             success = false;
             throw err;
         } finally {
-            Logger.getLogger().info(`Call REST server end: url=${url}, success=${success}, config=${util.inspect(paramConfig)}`);
+            Logger.getLogger().info(`Call REST server end: url=${url}, success=${success}, config=${util.inspect(paramConfig)}, data=${util.inspect(postData)}`);
         }
     }
 

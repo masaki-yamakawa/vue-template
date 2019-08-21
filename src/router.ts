@@ -1,19 +1,27 @@
 import Vue from "vue";
 import Router from "vue-router";
 import BaseLayout from "./layouts/default.vue";
+import Login from "./views/Login.vue";
 import Main from "./views/Main.vue";
 import Welcome from "./views/Home.vue";
 import Blank from "./views/Blank.vue";
+import store from "./stores";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     mode: "history",
     base: process.env.BASE_URL,
     routes: [
         {
+            path: "/login",
+            name: "login",
+            component: Login,
+        },
+        {
             path: "/",
             component: BaseLayout,
+            meta: { requiresAuth: true },
             children: [
                 { path: "/", component: Main },
                 { path: "/welcome", component: Welcome },
@@ -34,3 +42,13 @@ export default new Router({
         },
     ],
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth) && store.getters.jwt === "") {
+        next({ path: "/login", query: { redirect: to.fullPath } });
+    } else {
+        next();
+    }
+});
+
+export default router;

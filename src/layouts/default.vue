@@ -12,6 +12,7 @@
             </b-dropdown-item>
           </b-dropdown>
         </div>
+        <b-link :to="{ path: '/Login' }"><span>Logout</span></b-link>
       </slide>
     </nav>
 
