@@ -52,7 +52,7 @@ export default class Login extends Vue {
         password: this.password,
       });
       const jwt: string = res.headers.authorization;
-      store.commit("saveJwt", jwt);
+      store.commit("doLogin", { userId: this.userid, jwt });
       this.$router.push("/");
     } catch (err) {
       const status = err.response ? err.response.status : "";
