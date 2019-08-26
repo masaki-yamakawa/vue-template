@@ -12,6 +12,13 @@
             </b-dropdown-item>
           </b-dropdown>
         </div>
+        <div>
+          <b-dropdown id="dropdown-offset" offset="40" text="Add Content(xml)" variant="dark">
+            <b-dropdown-item v-bind="iframeXmlContents" v-for="iframeXmlContent in iframeXmlContents" :key="iframeXmlContent.id" v-on:click="selectContent(iframeXmlContent._attributes)">
+              <span>{{ iframeXmlContent._attributes.title }}</span>
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
         <b-link :to="{ path: '/Login' }" v-on:click="logout"><span>Logout</span></b-link>
       </slide>
     </nav>
@@ -23,6 +30,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Slide } from "vue-burger-menu";
+import * as xmlConverter from "xml-js";
 import { RepositoryFactory } from "../repositories/repositoryFactory";
 import { IContentRepository } from "../repositories/contentRepository";
 import store from "../stores";
@@ -35,9 +43,11 @@ import { Logger } from "../loggers/logger";
 })
 export default class Layout extends Vue {
   private iframeContents = [];
+  private iframeXmlContents = [];
 
   private async created() {
     this.iframeContents = await this.getIframeContents();
+    this.iframeXmlContents = await this.getIframeXmlContents();
   }
 
   private async getIframeContents() {
@@ -54,6 +64,25 @@ export default class Layout extends Vue {
         duration: 5000,
       });
       Logger.getLogger().error(`${status}: Not connected to API server: Failed to get iframe contents: ${err}`);
+      return;
+    }
+  }
+
+  private async getIframeXmlContents() {
+    try {
+      const repos: IContentRepository = RepositoryFactory.get("XmlContent") as IContentRepository;
+      const res = await repos.find();
+      const parsedXml: any = xmlConverter.xml2js(res.data, { compact: true, ignoreComment: true });
+      return parsedXml.response.contents.content;
+    } catch (err) {
+      const status = err.response ? err.response.status : "";
+      this.$notify({
+        title: `ERROR:${status}`,
+        type: "error",
+        text: "Not connected to API server: Failed to get iframe xml contents",
+        duration: 5000,
+      });
+      Logger.getLogger().error(`${status}: Not connected to API server: Failed to get iframe xml contents: ${err}`);
       return;
     }
   }
