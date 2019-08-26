@@ -48,6 +48,10 @@ export abstract class Repository implements IRepository {
         return this.callAxios(postUrl, config, data);
     }
 
+    protected getAxios(): AxiosInstance {
+        return instance;
+    }
+
     private async callAxios(url: string, config?: AxiosRequestConfig, postData?: any): Promise<AxiosResponse> {
         let paramConfig: AxiosRequestConfig | undefined;
         if (url !== "login") {
@@ -78,9 +82,5 @@ export abstract class Repository implements IRepository {
         } finally {
             Logger.getLogger().info(`Call REST server end: url=${url}, success=${success}, config=${util.inspect(paramConfig)}, data=${util.inspect(postData)}`);
         }
-    }
-
-    private getAxios(): AxiosInstance {
-        return instance;
     }
 }
