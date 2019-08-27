@@ -1,5 +1,5 @@
 <template>
-  <div id="tableau-container"></div>
+  <div ref="tableauViz"></div>
 </template>
 
 <script lang="ts">
@@ -50,11 +50,7 @@ export default class Tableau extends Vue {
   }
 
   private initViz() {
-    const vizDiv = document.createElement("div");
-    const container = document.getElementById("tableau-container");
-    if (container) {
-      container.appendChild(vizDiv);
-    }
+    const vizDiv = this.$refs.tableauViz;
     const options = {
       height: this.height,
       width: this.width,
@@ -64,7 +60,7 @@ export default class Tableau extends Vue {
         Logger.getLogger().debug("Tableau viz has finished loading");
       },
     };
-    this.viz = new window.tableau.Viz(vizDiv, this.url, options);
+    this.viz = new (window as any).tableau.Viz(vizDiv, this.url, options);
 
     if (this.refreshInterval > 0) {
       this.refreshTimer = setInterval(() => {
