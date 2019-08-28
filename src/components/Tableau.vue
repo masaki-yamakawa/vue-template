@@ -1,5 +1,18 @@
 <template>
-  <div ref="tableauViz"></div>
+  <div>
+    <div class="dev-tool-bar" v-if="!hideDevToolbar">
+      Refresh Interval:
+      <input
+        type="text"
+        :value="refreshIntervalInput"
+        v-on:change="onRefreshIntervalChanged"
+        size="3"
+        maxlength="5"
+        class="refresh-interval-input"
+      />ms
+    </div>
+    <div ref="tableauViz" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,7 +25,7 @@ export default class Tableau extends Vue {
   private url!: string;
   @Prop({ default: "100%" })
   private width!: string;
-  @Prop({ default: "700px" })
+  @Prop({ default: "100%" })
   private height!: string;
   @Prop({ default: false })
   private hideTabs!: boolean;
@@ -24,9 +37,12 @@ export default class Tableau extends Vue {
   private apiUrl!: string;
   @Prop({ default: -1 })
   private refreshInterval!: number;
+  @Prop({ default: true })
+  private hideDevToolbar!: boolean;
 
   private viz: any;
   private refreshTimer: NodeJS.Timeout | null = null;
+  private refreshIntervalInput: number = 0;
 
   private mounted() {
     const tableauScript = document.createElement("script");
@@ -40,12 +56,11 @@ export default class Tableau extends Vue {
         this.initViz();
       });
     }
+    this.refreshIntervalInput = this.refreshInterval;
   }
 
   private beforeDestroy() {
-    if (this.refreshTimer) {
-      clearInterval(this.refreshTimer);
-    }
+    this.clearRefreshTimer();
     this.viz.dispose();
   }
 
@@ -62,11 +77,45 @@ export default class Tableau extends Vue {
     };
     this.viz = new (window as any).tableau.Viz(vizDiv, this.url, options);
 
-    if (this.refreshInterval > 0) {
+    this.setRefreshTimer(this.refreshInterval);
+  }
+
+  private setRefreshTimer(interval: number) {
+    this.clearRefreshTimer();
+    if (interval > 0) {
       this.refreshTimer = setInterval(() => {
         this.viz.refreshDataAsync();
-      }, this.refreshInterval);
+      }, interval);
+      Logger.getLogger().debug(`Set refresh timer. interval=${interval}, timerId=${this.refreshTimer}`);
+    }
+  }
+
+  private clearRefreshTimer() {
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+      Logger.getLogger().debug(`Clear refresh timer. timerId=${this.refreshTimer}`);
+    }
+  }
+
+  private onRefreshIntervalChanged(event: any) {
+    if (!isNaN(event.target.value)) {
+      this.setRefreshTimer(event.target.value);
     }
   }
 }
 </script>
+
+<style scoped>
+.dev-tool-bar {
+  float: right;
+  margin-right: 1.5%;
+  font-size: 0.875rem;
+}
+.refresh-interval-input {
+  height: 20px;
+  padding: 0.2rem 0.2rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.4rem;
+}
+</style>
