@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tableau-container">
     <div class="dev-tool-bar" v-if="!hideDevToolbar">
       Refresh Interval:
       <input
@@ -11,7 +11,7 @@
         class="refresh-interval-input"
       />ms
     </div>
-    <div ref="tableauViz" />
+    <div class="tableau-viz" ref="tableauViz" />
   </div>
 </template>
 
@@ -106,6 +106,10 @@ export default class Tableau extends Vue {
 </script>
 
 <style scoped>
+.tableau-container {
+  width: 100%;
+  height: 100%;
+}
 .dev-tool-bar {
   float: right;
   margin-right: 1.5%;
@@ -117,5 +121,9 @@ export default class Tableau extends Vue {
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.4rem;
+}
+.tableau-viz {
+  width: 100%;
+  height: 100%;
 }
 </style>
