@@ -3,6 +3,7 @@
     <nav class="navbar header" role="navigation" aria-label="main navigation">
       <slide left width="350" class="navbar slider">
         <b-link :to="{ path: '/' }"><span>Main</span></b-link>
+        <b-link :to="{ path: '/smain' }"><span>Splitted Main</span></b-link>
         <b-link :to="{ path: '/welcome' }"><span>Welcome to Vue.js world</span></b-link>
         <b-link :to="{ path: '/about' }"><span>About us</span></b-link>
         <div>

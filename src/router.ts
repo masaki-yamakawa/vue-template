@@ -3,6 +3,7 @@ import Router from "vue-router";
 import BaseLayout from "./layouts/default.vue";
 import Login from "./views/Login.vue";
 import Main from "./views/Main.vue";
+import SplitedMain from "./views/SplitedMain.vue";
 import Welcome from "./views/Home.vue";
 import Blank from "./views/Blank.vue";
 import store from "./stores";
@@ -24,6 +25,7 @@ const router = new Router({
             meta: { requiresAuth: true },
             children: [
                 { path: "/", component: Main },
+                { path: "/smain", component: SplitedMain },
                 { path: "/welcome", component: Welcome },
                 {
                     path: "/about",
