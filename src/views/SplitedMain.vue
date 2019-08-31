@@ -1,12 +1,11 @@
 <template>
   <div class="splitpanes-container">
-    <splitpanes class="default-theme" horizontal style="height: 680px">
-      <splitpanes>
-        <span splitpanes-size="30%"><Tableau :url="url" /></span>
-        <span splitpanes-size="40%"><Tableau url="http://public.tableau.com/views/RegionalSampleWorkbook/Obesity" :hideDevToolbar="false" /></span>
-        <span splitpanes-size="30%">dummy</span>
-      </splitpanes>
-      <span splitpanes-size="100%"><Tableau url="http://public.tableau.com/views/RegionalSampleWorkbook/Stocks" :hideDevToolbar="false" /></span>
+    <splitpanes horizontal style="height: 680px">
+      <span v-for="tableauViews in tableauViewsArray" :key="tableauViews.id">
+        <splitpanes>
+          <span v-for="tableauView in tableauViews" :key="tableauView.id"><Tableau :url="tableauView.url" /></span>
+        </splitpanes>
+      </span>
     </splitpanes>
   </div>
 </template>
@@ -24,7 +23,20 @@ import "splitpanes/dist/splitpanes.css";
   },
 })
 export default class SplitedMain extends Vue {
-  private url: string = "http://public.tableau.com/views/RegionalSampleWorkbook/Storms";
+  private tableauViewsArray = [
+    [
+      { id: 10, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms", next: [] },
+    ],
+    [
+      { id: 20, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Obesity", next: [] },
+      { id: 21, url: "http://public.tableau.com/views/RegionalSampleWorkbook/College", next: [] },
+      { id: 22, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Economy", next: [] },
+    ],
+    [
+      { id: 30, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Flights", next: [] },
+    ],
+  ];
+
 }
 </script>
 
