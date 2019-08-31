@@ -25,15 +25,15 @@ import "splitpanes/dist/splitpanes.css";
 export default class SplitedMain extends Vue {
   private tableauViewsArray = [
     [
-      { id: 10, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms", next: [] },
+      { id: 10, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms", children: [[]] },
     ],
     [
-      { id: 20, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Obesity", next: [] },
-      { id: 21, url: "http://public.tableau.com/views/RegionalSampleWorkbook/College", next: [] },
-      { id: 22, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Economy", next: [] },
+      { id: 20, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Obesity", children: [[]] },
+      { id: 21, url: "http://public.tableau.com/views/RegionalSampleWorkbook/College", children: [[]] },
+      { id: 22, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Economy", children: [[]] },
     ],
     [
-      { id: 30, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Flights", next: [] },
+      { id: 30, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Flights", children: [[]] },
     ],
   ];
 
