@@ -4,7 +4,7 @@
       <span v-for="tableauViews in tableauViewsArray" :key="tableauViews.id">
         <splitpanes>
           <span v-for="tableauView in tableauViews" :key="tableauView.id">
-            <Tableau :url="tableauView.url" :refreshInterval="5000" :hideDevToolbar="false" />
+            <Tableau :url="tableauView.url" :refreshInterval="-1" :hideDevToolbar="false" />
           </span>
         </splitpanes>
       </span>

@@ -1,5 +1,5 @@
 <template>
-  <div class="tableau-container">
+  <div class="tableau-container" v-visibility-change="onVisibilityChanged">
     <div class="dev-tool-bar" v-if="!hideDevToolbar">
       Refresh Interval:
       <input
@@ -17,7 +17,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import visibility from "vue-visibility-change";
 import { Logger } from "../loggers/logger";
+import * as util from "util";
+
+Vue.use(visibility);
 
 @Component
 export default class Tableau extends Vue {
@@ -94,12 +98,22 @@ export default class Tableau extends Vue {
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer);
       Logger.getLogger().debug(`Clear refresh timer. timerId=${this.refreshTimer}`);
+      this.refreshTimer = null;
     }
   }
 
   private onRefreshIntervalChanged(event: any) {
     if (!isNaN(event.target.value)) {
+      this.refreshIntervalInput = event.target.value;
       this.setRefreshTimer(event.target.value);
+    }
+  }
+
+  private onVisibilityChanged(evt: any, hidden: boolean) {
+    if (hidden) {
+      this.clearRefreshTimer();
+    } else {
+      this.setRefreshTimer(this.refreshIntervalInput);
     }
   }
 }
