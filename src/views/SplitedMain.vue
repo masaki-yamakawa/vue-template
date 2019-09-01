@@ -1,9 +1,11 @@
 <template>
   <div class="splitpanes-container">
-    <splitpanes horizontal style="height: 680px">
+    <splitpanes horizontal class="default-theme" style="height: 680px">
       <span v-for="tableauViews in tableauViewsArray" :key="tableauViews.id">
         <splitpanes>
-          <span v-for="tableauView in tableauViews" :key="tableauView.id"><Tableau :url="tableauView.url" /></span>
+          <span v-for="tableauView in tableauViews" :key="tableauView.id">
+            <Tableau :url="tableauView.url" :refreshInterval="5000" :hideDevToolbar="false" />
+          </span>
         </splitpanes>
       </span>
     </splitpanes>
@@ -36,7 +38,6 @@ export default class SplitedMain extends Vue {
       { id: 30, url: "http://public.tableau.com/views/RegionalSampleWorkbook/Flights", children: [[]] },
     ],
   ];
-
 }
 </script>
 
@@ -46,5 +47,16 @@ export default class SplitedMain extends Vue {
   height: 100%;
   margin: 20px auto;
   padding-left: 12px;
+}
+</style>
+
+<style>
+.default-theme.splitpanes--horizontal > .splitpanes__splitter,
+.default-theme .splitpanes--horizontal > .splitpanes__splitter {
+  height: 11px;
+}
+.default-theme.splitpanes--vertical > .splitpanes__splitter,
+.default-theme .splitpanes--vertical > .splitpanes__splitter {
+  width: 11px;
 }
 </style>
