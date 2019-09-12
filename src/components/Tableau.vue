@@ -19,7 +19,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import visibility from "vue-visibility-change";
 import { Logger } from "../loggers/logger";
-import * as util from "util";
 
 Vue.use(visibility);
 
@@ -48,19 +47,39 @@ export default class Tableau extends Vue {
   private refreshTimer: NodeJS.Timeout | null = null;
   private refreshIntervalInput: number = 0;
 
-  private mounted() {
-    const tableauScript = document.createElement("script");
-    tableauScript.setAttribute("src", this.apiUrl);
-    document.head.appendChild(tableauScript);
-
-    try {
-      this.initViz();
-    } catch (err) {
-      window.addEventListener("load", () => {
-        this.initViz();
-      });
+  private async mounted() {
+    if (this.isTableauScriptLoaded() === false) {
+      await this.loadTableauScript();
     }
+
+    this.initViz();
     this.refreshIntervalInput = this.refreshInterval;
+  }
+
+  private isTableauScriptLoaded(): boolean {
+    try {
+      const vizManager = (window as any).tableau.VizManager;
+      return true;
+    } catch (err) {
+      Logger.getLogger().debug("Tableau script is not yet loaded");
+      return false;
+    }
+  }
+
+  private loadTableauScript(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.isTableauScriptLoaded()) {
+        return;
+      }
+
+      const tableauScript = document.createElement("script");
+      tableauScript.setAttribute("src", this.apiUrl);
+      tableauScript.async = true;
+      tableauScript.onload = () => {
+        resolve();
+      };
+      document.head.appendChild(tableauScript);
+    });
   }
 
   private beforeDestroy() {
