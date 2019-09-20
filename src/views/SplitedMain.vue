@@ -53,10 +53,12 @@ export default class SplitedMain extends Vue {
 <style>
 .default-theme.splitpanes--horizontal > .splitpanes__splitter,
 .default-theme .splitpanes--horizontal > .splitpanes__splitter {
-  height: 11px;
+  height: 25px;
+  background: linear-gradient(to bottom, #EEEEEE, #FFF 45%, #FFF 55%, #EEEEEE);
 }
 .default-theme.splitpanes--vertical > .splitpanes__splitter,
 .default-theme .splitpanes--vertical > .splitpanes__splitter {
-  width: 11px;
+  width: 25px;
+  background: linear-gradient(to left, #EEEEEE, #FFF 45%, #FFF 55%, #EEEEEE);
 }
 </style>
