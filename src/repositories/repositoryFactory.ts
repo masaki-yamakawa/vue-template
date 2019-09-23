@@ -2,21 +2,25 @@ import { IRepository } from "./repository";
 import { LoginRepository } from "./loginRepository";
 import { ContentRepository } from "./contentRepository";
 import { XmlContentRepository } from "./xmlContentRepository";
+import { LayoutRepository } from "./layoutRepository";
 import { MockLoginRepository } from "./mock/mockLoginRepository";
 import { MockContentRepository } from "./mock/mockContentRepository";
 import { MockXmlContentRepository } from "./mock/mockXmlContentRepository";
+import { MockLayoutRepository } from "./mock/mockLayoutRepository";
 import { Logger } from "../loggers/logger";
 
 const repositories: any = {
     LoginRepository,
     ContentRepository,
     XmlContentRepository,
+    LayoutRepository,
 };
 
 const mockRepositories: any = {
     MockLoginRepository,
     MockContentRepository,
     MockXmlContentRepository,
+    MockLayoutRepository,
 };
 
 export class RepositoryFactory {
