@@ -20,6 +20,8 @@
             </b-dropdown-item>
           </b-dropdown>
         </div>
+        <b-link @click="showSaveLayout"><span>Save Layout</span></b-link>
+        <SaveLayoutDialog v-if="showSaveLayoutDialog" :saveData="saveLayoutData" @ok="doSaveLayout" @cancel="cancelSaveLayout" />
         <b-link :to="{ path: '/Login' }" v-on:click="logout"><span>Logout</span></b-link>
       </slide>
     </nav>
@@ -31,6 +33,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Slide } from "vue-burger-menu";
+import SaveLayoutDialog from "@/components/SaveLayoutDialog.vue";
 import * as xmlConverter from "xml-js";
 import { RepositoryFactory } from "../repositories/repositoryFactory";
 import { IContentRepository } from "../repositories/contentRepository";
@@ -40,11 +43,14 @@ import { Logger } from "../loggers/logger";
 @Component({
   components: {
     Slide,
+    SaveLayoutDialog,
   },
 })
 export default class Layout extends Vue {
   private iframeContents = [];
   private iframeXmlContents = [];
+  private showSaveLayoutDialog: boolean = false;
+  private saveLayoutData: any[][] = [[]];
 
   private async created() {
     this.iframeContents = await this.getIframeContents();
@@ -90,6 +96,30 @@ export default class Layout extends Vue {
 
   private selectContent(content: any) {
     this.$store.commit("setContent", content);
+  }
+
+  private showSaveLayout(): void {
+    const splitedMain = this.$children.find((child) => child.$options.name === "SplitedMain");
+    if (splitedMain) {
+      this.saveLayoutData = (splitedMain as any).tableauViewsArray;
+      this.showSaveLayoutDialog = true;
+    } else {
+      this.$notify({
+        title: "WARNING",
+        type: "warn",
+        text: "Layout cannot be saved with this page",
+        duration: 5000,
+      });
+    }
+  }
+
+  private doSaveLayout(saveOpt: any): void {
+    this.showSaveLayoutDialog = false;
+    Logger.getLogger().debug(`doSaveLayout:name=${saveOpt.name}, shareWith=${saveOpt.share}`);
+  }
+
+  private cancelSaveLayout(): void {
+    this.showSaveLayoutDialog = false;
   }
 
   private logout() {
