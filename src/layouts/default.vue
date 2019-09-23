@@ -37,6 +37,7 @@ import SaveLayoutDialog from "@/components/SaveLayoutDialog.vue";
 import * as xmlConverter from "xml-js";
 import { RepositoryFactory } from "../repositories/repositoryFactory";
 import { IContentRepository } from "../repositories/contentRepository";
+import { ILayoutRepository } from "../repositories/layoutRepository";
 import store from "../stores";
 import { Logger } from "../loggers/logger";
 
@@ -67,10 +68,10 @@ export default class Layout extends Vue {
       this.$notify({
         title: `ERROR:${status}`,
         type: "error",
-        text: "Not connected to API server: Failed to get iframe contents",
+        text: "Error occurred when connecting to API server: Failed to get iframe contents",
         duration: 5000,
       });
-      Logger.getLogger().error(`${status}: Not connected to API server: Failed to get iframe contents: ${err}`);
+      Logger.getLogger().error(`${status}: Error occurred when connecting to API server: Failed to get iframe contents: ${err}`);
       return;
     }
   }
@@ -86,10 +87,10 @@ export default class Layout extends Vue {
       this.$notify({
         title: `ERROR:${status}`,
         type: "error",
-        text: "Not connected to API server: Failed to get iframe xml contents",
+        text: "Error occurred when connecting to API server: Failed to get iframe xml contents",
         duration: 5000,
       });
-      Logger.getLogger().error(`${status}: Not connected to API server: Failed to get iframe xml contents: ${err}`);
+      Logger.getLogger().error(`${status}: Error occurred when connecting to API server: Failed to get iframe xml contents: ${err}`);
       return;
     }
   }
@@ -113,9 +114,34 @@ export default class Layout extends Vue {
     }
   }
 
-  private doSaveLayout(saveOpt: any): void {
+  private async doSaveLayout(saveOpt: any): Promise<void> {
     this.showSaveLayoutDialog = false;
     Logger.getLogger().debug(`doSaveLayout:name=${saveOpt.name}, shareWith=${saveOpt.share}`);
+
+    try {
+      const repos: ILayoutRepository = RepositoryFactory.get("Layout") as ILayoutRepository;
+      const req = {
+        owner: store.getters.userId,
+        layouts: [
+          {
+            name: saveOpt.name,
+            group: "Group1",
+            shareWith: saveOpt.share,
+            layout: this.saveLayoutData,
+          },
+        ],
+      };
+      await repos.save("Layout", req);
+    } catch (err) {
+      const status = err.response ? err.response.status : "";
+      this.$notify({
+        title: `ERROR:${status}`,
+        type: "error",
+        text: "Error occurred when connecting to API server: Failed to save layout",
+        duration: 5000,
+      });
+      Logger.getLogger().error(`${status}: Error occurred when connecting to API server: Failed to save layout: ${err}`);
+    }
   }
 
   private cancelSaveLayout(): void {

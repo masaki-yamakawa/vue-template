@@ -8,7 +8,7 @@ class AppProperty {
 }
 
 const getters: MutationTree<AppProperty> = {
-    userName: (state) => state.userId,
+    userId: (state) => state.userId,
     jwt: (state) => state.jwt,
     isLogin: (state) => state.isLogin,
     content: (state) => state.content,
