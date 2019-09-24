@@ -122,10 +122,11 @@ export default class Layout extends Vue {
       const repos: ILayoutRepository = RepositoryFactory.get("Layout") as ILayoutRepository;
       const req = {
         owner: store.getters.userId,
+        group: "Group1",
         layouts: [
           {
+            id: null,
             name: saveOpt.name,
-            group: "Group1",
             shareWith: saveOpt.share,
             layout: this.saveLayoutData,
           },
