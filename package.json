@@ -14,7 +14,7 @@
     "dependencies": {
         "@browser-bunyan/server-stream": "^1.5.3",
         "axios": "^0.19.0",
-        "bootstrap-vue": "^2.0.0-rc.26",
+        "bootstrap-vue": "^2.0.2",
         "browser-bunyan": "^1.5.3",
         "core-js": "^2.6.5",
         "splitpanes": "^1.14.5",
